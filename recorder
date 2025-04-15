@@ -1,0 +1,23 @@
+import pyautogui
+import cv2
+import numpy as np
+
+screen_resolution = (1920, 1080)
+video_codec = cv2.VideoWriter_fourcc(*"XVID")
+output_filename = "ScreenCapture.avi"
+frame_rate = 60.0
+num_frames = int(frame_rate * 10)  
+video_writer = cv2.VideoWriter(output_filename, video_codec, frame_rate, screen_resolution)
+cv2.namedWindow("Screen Capture", cv2.WINDOW_NORMAL)
+cv2.resizeWindow("Screen Capture", 480, 270)
+for _ in range(num_frames):
+   screenshot = pyautogui.screenshot()
+   frame_array = np.array(screenshot)
+   frame_rgb = cv2.cvtColor(frame_array, cv2.COLOR_BGR2RGB)
+   video_writer.write(frame_rgb)
+   cv2.imshow("Screen Capture", frame_rgb)
+   if cv2.waitKey(1) == ord('q'):
+      break
+
+video_writer.release()
+cv2.destroyAllWindows()
